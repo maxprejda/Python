@@ -1,134 +1,61 @@
 import requests
 from bs4 import BeautifulSoup
 
-URL = "https://stats.baseball.cz/cs/events/2023-nadstavba-o-extraligu/teams/27061"
+import xlwt
 
-r = requests.get(URL)
+book = xlwt.Workbook()
 
-data = BeautifulSoup(r.content, 'html.parser')
-tabulka = data.find('tbody')
-radky = tabulka.find_all('tr')
+n = 0
 
-for i in range(len(radky)):
-    info = radky[i].find_all('td')
+def addToTable(cislo, hrac, pozice, haze, vyska, vaha, rok, n, sh):
+    sh.write(n, 0, cislo)
+    sh.write(n, 1, hrac)
+    sh.write(n, 2, pozice)
+    sh.write(n, 3, haze)
+    sh.write(n, 4, vyska)
+    sh.write(n, 5, vaha)
+    sh.write(n, 6, rok)
 
-    cislo = info[0].text
-    hrac = info[1].find('a').text
-    pozice = info[2].text
-    haze = info[3].text
-    vyska = info[4].text
-    vaha = info[5].text
-    rok = info[6].text
+def collect(URL, n):
+    r = requests.get(URL)
 
+    sh = book.add_sheet("Hráči " + str(n))
 
-    print(f'Číslo: {cislo} | Hráč: {hrac} | Pozice: {pozice} | Háže/Pálí: {haze} | Výška: {vyska} | Váha: {vaha} | Rok Narození: {rok}')
+    data = BeautifulSoup(r.content, 'html.parser')
+    tabulka = data.find('tbody')
+    radky = tabulka.find_all('tr')
 
-    URL = "https://stats.baseball.cz/cs/events/2023-nadstavba-o-extraligu/teams/27059"
+    for i in range(len(radky)):
+        info = radky[i].find_all('td')
 
-r = requests.get(URL)
+        cislo = info[0].text
+        hrac = info[1].find('a').text
+        pozice = info[2].text
+        haze = info[3].text
+        vyska = info[4].text
+        vaha = info[5].text
+        rok = info[6].text
 
-data = BeautifulSoup(r.content, 'html.parser')
-tabulka = data.find('tbody')
-radky = tabulka.find_all('tr')
+        addToTable(cislo, hrac, pozice, haze, vyska, vaha, rok, i, sh)
+        print(f'Číslo: {cislo} | Hráč: {hrac} | Pozice: {pozice} | Háže/Pálí: {haze} | Výška: {vyska} | Váha: {vaha} | Rok Narození: {rok}')
 
-for i in range(len(radky)):
-    info = radky[i].find_all('td')
+collect("https://stats.baseball.cz/cs/events/2023-nadstavba-o-extraligu/teams/27061", n)
+n+=1
 
-    cislo = info[0].text
-    hrac = info[1].find('a').text
-    pozice = info[2].text
-    haze = info[3].text
-    vyska = info[4].text
-    vaha = info[5].text
-    rok = info[6].text
+collect("https://stats.baseball.cz/cs/events/2023-nadstavba-o-extraligu/teams/27059", n)
+n+=1
 
+collect("https://stats.baseball.cz/cs/events/2023-nadstavba-o-extraligu/teams/27062", n)
+n+=1
 
-    print(f'Číslo: {cislo} | Hráč: {hrac} | Pozice: {pozice} | Háže/Pálí: {haze} | Výška: {vyska} | Váha: {vaha} | Rok Narození: {rok}')
+collect("https://stats.baseball.cz/cs/events/2023-nadstavba-o-extraligu/teams/27060", n)
+n+=1
 
-    URL = "https://stats.baseball.cz/cs/events/2023-nadstavba-o-extraligu/teams/27062"
+collect("https://stats.baseball.cz/cs/events/2023-nadstavba-o-extraligu/teams/27063", n)
+n+=1
 
-r = requests.get(URL)
+collect("https://stats.baseball.cz/cs/events/2023-nadstavba-o-extraligu/teams/27064", n)
+n+=1
 
-data = BeautifulSoup(r.content, 'html.parser')
-tabulka = data.find('tbody')
-radky = tabulka.find_all('tr')
-
-for i in range(len(radky)):
-    info = radky[i].find_all('td')
-
-    cislo = info[0].text
-    hrac = info[1].find('a').text
-    pozice = info[2].text
-    haze = info[3].text
-    vyska = info[4].text
-    vaha = info[5].text
-    rok = info[6].text
-
-
-    print(f'Číslo: {cislo} | Hráč: {hrac} | Pozice: {pozice} | Háže/Pálí: {haze} | Výška: {vyska} | Váha: {vaha} | Rok Narození: {rok}')
-
-    URL = "https://stats.baseball.cz/cs/events/2023-nadstavba-o-extraligu/teams/27060"
-
-r = requests.get(URL)
-
-data = BeautifulSoup(r.content, 'html.parser')
-tabulka = data.find('tbody')
-radky = tabulka.find_all('tr')
-
-for i in range(len(radky)):
-    info = radky[i].find_all('td')
-
-    cislo = info[0].text
-    hrac = info[1].find('a').text
-    pozice = info[2].text
-    haze = info[3].text
-    vyska = info[4].text
-    vaha = info[5].text
-    rok = info[6].text
-
-
-    print(f'Číslo: {cislo} | Hráč: {hrac} | Pozice: {pozice} | Háže/Pálí: {haze} | Výška: {vyska} | Váha: {vaha} | Rok Narození: {rok}')
-
-    URL = "https://stats.baseball.cz/cs/events/2023-nadstavba-o-extraligu/teams/27063"
-
-r = requests.get(URL)
-
-data = BeautifulSoup(r.content, 'html.parser')
-tabulka = data.find('tbody')
-radky = tabulka.find_all('tr')
-
-for i in range(len(radky)):
-    info = radky[i].find_all('td')
-
-    cislo = info[0].text
-    hrac = info[1].find('a').text
-    pozice = info[2].text
-    haze = info[3].text
-    vyska = info[4].text
-    vaha = info[5].text
-    rok = info[6].text
-
-
-    print(f'Číslo: {cislo} | Hráč: {hrac} | Pozice: {pozice} | Háže/Pálí: {haze} | Výška: {vyska} | Váha: {vaha} | Rok Narození: {rok}')
-
-    URL = "https://stats.baseball.cz/cs/events/2023-nadstavba-o-extraligu/teams/27064"
-
-r = requests.get(URL)
-
-data = BeautifulSoup(r.content, 'html.parser')
-tabulka = data.find('tbody')
-radky = tabulka.find_all('tr')
-
-for i in range(len(radky)):
-    info = radky[i].find_all('td')
-
-    cislo = info[0].text
-    hrac = info[1].find('a').text
-    pozice = info[2].text
-    haze = info[3].text
-    vyska = info[4].text
-    vaha = info[5].text
-    rok = info[6].text
-
-
-    print(f'Číslo: {cislo} | Hráč: {hrac} | Pozice: {pozice} | Háže/Pálí: {haze} | Výška: {vyska} | Váha: {vaha} | Rok Narození: {rok}')
+book.save("tabulka.xls")
+print("done!")
